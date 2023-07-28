@@ -1,31 +1,33 @@
-const router = require('express').Router();
-const favoritesongs = require('../../models/favoritesongs');
-const withAuth = require('../utils/auth');
+const router = require("express").Router();
+const favoritesongs = require("../../models/favoritesongs");
+const withAuth = require("../../utils/auth");
 
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const songlist = await favoritesongs.findAll({
       include: [
         {
           model: favoritesongs,
-          attributes: ['name'],
+          attributes: ["name"],
         },
       ],
     });
-    res.render('searchresults', { 
-      songlist, 
-      logged_in: req.session.logged_in 
+    res.render("searchresults", {
+      songlist,
+      logged_in: req.session.logged_in,
     });
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-router.post('/', withAuth, async (req, res) => {
+router.post("/", withAuth, async (req, res) => {
   try {
     // Check if the user is logged in before proceeding
     if (!req.session.logged_in) {
-      res.status(401).json({ message: 'You must be logged in to add a favorite song.' });
+      res
+        .status(401)
+        .json({ message: "You must be logged in to add a favorite song." });
       return;
     }
     // Get the user input from the request body
@@ -44,7 +46,12 @@ router.post('/', withAuth, async (req, res) => {
     });
 
     // Send a response indicating success
-    res.status(201).json({ message: 'Favorite song added successfully.', favoriteSong: newFavoriteSong });
+    res
+      .status(201)
+      .json({
+        message: "Favorite song added successfully.",
+        favoriteSong: newFavoriteSong,
+      });
   } catch (err) {
     res.status(500).json(err);
   }

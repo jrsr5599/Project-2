@@ -2,11 +2,11 @@ const path = require("path");
 const express = require("express");
 const session = require("express-session");
 const exphbs = require("express-handlebars");
-// TODO: Create routes to serve middleware and to activate the server
-const routes = require("./controllers");
+const routes = require("./controllers/");
 const helpers = require("./utils/helpers");
 
 const sequelize = require("./config/connection");
+const Sequelize = require("sequelize");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 
 const app = express();
@@ -33,6 +33,10 @@ app.use(session(sess));
 
 app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
+
+app.get("/", function (req, res) {
+  res.render("home");
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
