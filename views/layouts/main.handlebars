@@ -8,11 +8,26 @@
     
 </head>
 <body>
-    <img src="/images/album-image-1.jpeg">
-    <img src="/images/album-image-2.jpeg">
-    <img src="/images/album-image-3.jpeg">
-    <img src="/images/album-image-4.jpeg">
-    <img src="/images/album-image-5.jpeg">
-    {{{ body }}}
+    <div>
+        <header>
+            {{#if logged_in}}
+            <a href="/logout"></a> |
+            <button class="no-button" id="logout">logout</button>
+            {{else}}
+            <a href="/login">login</a>
+            {{/if}}
+        </header>
+        <main>
+            <img src="/images/album-image-1.jpeg">
+            <img src="/images/album-image-2.jpeg">
+            <img src="/images/album-image-3.jpeg">
+            <img src="/images/album-image-4.jpeg">
+            <img src="/images/album-image-5.jpeg">
+            {{{ body }}}
+        </main>
+        <footer>
+            
+        </footer>
+    </div>
 </body>
 </html>
