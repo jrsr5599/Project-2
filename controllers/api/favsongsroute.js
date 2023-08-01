@@ -4,7 +4,7 @@ const withAuth = require("../../utils/auth");
 
 router.get("/", async (req, res) => {
   try {
-    const songlist = await favoritesongs.findAll({
+    const songList = await favoritesongs.findAll({
       include: [
         {
           model: favoritesongs,
@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
       ],
     });
     res.render("searchresults", {
-      songlist,
+      songList,
       logged_in: req.session.logged_in,
     });
   } catch (err) {
