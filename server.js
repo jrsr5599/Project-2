@@ -34,14 +34,12 @@ app.use(session(sess));
 app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 
-app.get("/", function (req, res) {
-  res.render("home");
-});
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
-
+app.get("/", function (req, res) {
+  res.render("home");
+});
 app.use(routes);
 
 sequelize.sync({ force: false }).then(() => {
