@@ -1,7 +1,9 @@
 const router = require("express").Router();
 
-const favsongRoutes = require("./favsongsroute.js");
+const userRoutes = require("./userRoutes");
+const favsongRoutes = require("./favsongsroute");
 
-router.use("/song", favsongRoutes);
+router.use("/users", userRoutes);
+router.use("/favsongs", favsongRoutes);
 
 module.exports = router;
