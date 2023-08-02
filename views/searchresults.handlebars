@@ -12,6 +12,9 @@
                 {{!-- img --}}
               </div>
             </div>
+
+
+
             <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
               <span class="sr-only">Previous</span>
@@ -21,7 +24,22 @@
               <span class="sr-only">Next</span>
             </a>
           </div>
-        
+
+
+  <div class="input-group">
+    <div class="form-outline">
+      <input type="search" id="form1" class="form-control" />
+      <label class="form-label" for="form1">Search</label>
+    </div>
+    <button type="button" class="btn btn-primary" onclick="performSearch()">
+      <i class="fas fa-search"></i>
+    </button>
+  </div>
+
+
+
+
+  <div id="searchResults"></div>
         
         <div class="row">
           <!-- Music details modal -->
@@ -68,6 +86,9 @@
           </div>
           
         </div>
+
+
+
         <div class="row">
           <div class="col">
             <h3>Catagories</h3>
