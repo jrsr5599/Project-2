@@ -24,6 +24,24 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/search", withAuth, async (req, res) => {
+  try {
+    const userData = await User.findByPk(req.session.user_id, {
+      attributes: { exclude: ["password"] },
+      include: [{ model: Favoritesongs }],
+    });
+
+    const user = userData.get({ plain: true });
+
+    res.render("profile", {
+      ...user,
+      logged_in: true,
+    });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 router.get("/login", (req, res) => {
   if (req.session.logged_in) {
     res.redirect("/");
