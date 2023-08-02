@@ -2,9 +2,3 @@ DROP DATABASE IF EXISTS users_db;
 CREATE DATABASE users_db;
 
 
-DROP DATABASE IF EXISTS userfavs_db;
-CREATE DATABASE userfavs_db;
-
-
-
-
