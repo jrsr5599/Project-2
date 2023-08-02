@@ -4,7 +4,7 @@ const withAuth = require("../utils/auth");
 
 router.get("/", async (req, res) => {
   try {
-    const favSongData = await Favoritesongs.findAll({
+    const favSong = await Favoritesongs.findAll({
       include: [
         {
           model: User,
@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
       ],
     });
 
-    const favSongs = favSongData.map((songs) => songs.get({ plain: true }));
+    const favSongs = favSong.map((songs) => songs.get({ plain: true }));
 
     res.render("homepage", {
       favSongs,
@@ -24,7 +24,29 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/search", withAuth, async (req, res) => {
+router.get("/searchresults/:id", async (reg, res) => {
+  try {
+    const favSongData = await Favoritesongs.findByPk(req.params.id, {
+      include: [
+        {
+          model: User,
+          attributes: ["name"],
+        },
+      ],
+    });
+
+    const favSong = favSongData.get({ plain: true });
+
+    res.render("project", {
+      ...favSong,
+      logged_in: req.session.logged_in,
+    });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+router.get("/searchresults", withAuth, async (req, res) => {
   try {
     const userData = await User.findByPk(req.session.user_id, {
       attributes: { exclude: ["password"] },
