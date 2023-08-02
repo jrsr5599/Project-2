@@ -55,7 +55,7 @@ router.get("/searchresults", withAuth, async (req, res) => {
 
     const user = userData.get({ plain: true });
 
-    res.render("profile", {
+    res.render("searchresults", {
       ...user,
       logged_in: true,
     });
@@ -66,7 +66,7 @@ router.get("/searchresults", withAuth, async (req, res) => {
 
 router.get("/login", (req, res) => {
   if (req.session.logged_in) {
-    res.redirect("/");
+    res.redirect("/searchresults");
   } else {
     res.render("login");
   }
