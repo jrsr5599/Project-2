@@ -1,16 +1,55 @@
-var redirect ='https://localhost:3001'
+const axios = require('axios');
 
-var client_id = ' YOUR CLIENT ID';
-var client_secret = 'YOUR SECRET ID';
+const clientId = '051652fb6a40447e8315d50d70c4f497';
+const clientSecret = 'YOUR_Cdd07ad3d75df486e967c9dc12f4b1c52LIENT_SECRET';
+const basicAuth = btoa(`${clientId}:${clientSecret}`);
+let accessToken = null;
 
-const AUTHORIZE = 'https://accounts.spotify.com/authorize';
 
-const TOKEN = 'https://accounts.spotify.com/api/token'
-const ARTISTS = 'https://api.spotify.com/v1/me/top/artists?offset=0&limit=10&time_range=long_term';
+async function getAccessToken() {
+  try {
+    const response = await axios.post('https://accounts.spotify.com/api/token', 'grant_type=client_credentials', {
+      headers: {
+        'Authorization': `Basic ${basicAuth}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
 
-const list = document.getElementById('list');
-const cover = document.getElementById('cover');
-
-function authorize () {
-  
+    accessToken = response.data.access_token;
+  } catch (error) {
+    console.error('Error fetching access token:', error);
+  }
 }
+
+
+async function searchArtists(query) {
+  if (!accessToken) {
+    await getAccessToken();
+  }
+
+  try {
+    const response = await axios.get(' "https://api.spotify.com/v1/me/shows?offset=0&limit=20"', {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+      },
+      params: {
+        q: query,
+        type: 'artist',
+      },
+    });
+
+    return response.data.artists.items;
+  } catch (error) {
+    console.error('Error searching artists:', error);
+  }
+}
+
+
+const query = ''; 
+searchArtists(query)
+  .then((searchResults) => {
+    console.log('Search Results:', searchResults);
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
