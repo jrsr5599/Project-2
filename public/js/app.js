@@ -18,8 +18,7 @@ async function getAccessToken() {
   }
 }
 
-
-async function searchArtists(query) {
+async function searchArtistsAndAlbums(query) {
   if (!accessToken) {
     await getAccessToken();
   }
@@ -35,12 +34,29 @@ async function searchArtists(query) {
       },
     });
 
-    return response.data.artists.items;
+    const artists = response.data.artists.items;
+    const albums = await Promise.all(
+      artists.slice(0, 1).map(async (artist) => {
+        const albumsResponse = await axios.get(`https://api.spotify.com/v1/artists/${artist.id}/albums`, {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+          },
+          params: {
+            include_groups: 'album',
+          },
+        });
+        return {
+          artist: artist,
+          albums: albumsResponse.data.items,
+        };
+      })
+    );
+
+    return albums;
   } catch (error) {
-    console.error('Error searching artists:', error);
+    console.error('Error searching artists and albums:', error);
   }
 }
-
 
 const query = ''; 
 searchArtists(query)
@@ -51,9 +67,9 @@ searchArtists(query)
     console.error('Error:', error);
   });
 
-function performSearch() {
+  function performSearch() {
     const query = document.getElementById('form1').value;
-    searchArtists(query)
+    searchArtistsAndAlbums(query)
       .then((searchResults) => {
         displaySearchResults(searchResults);
       })
@@ -61,19 +77,43 @@ function performSearch() {
         console.error('Error:', error);
       });
   }
+  
   function displaySearchResults(results) {
     const searchResultsDiv = document.getElementById('searchResults');
     searchResultsDiv.innerHTML = '';
-
+  
     if (results && results.length > 0) {
-      const ul = document.createElement('ul');
-      results.forEach((artist) => {
-        const li = document.createElement('li');
-        li.textContent = artist.name;
-        ul.appendChild(li);
+      results.forEach((result) => {
+        const artistName = result.artist.name;
+        const albums = result.albums;
+  
+        const artistDiv = document.createElement('div');
+        artistDiv.innerHTML = `<h3>${artistName}</h3>`;
+        searchResultsDiv.appendChild(artistDiv);
+  
+        if (albums.length > 0) {
+          const albumList = document.createElement('ul');
+          albums.forEach((album) => {
+            const li = document.createElement('li');
+            const albumLink = document.createElement('a');
+            albumLink.textContent = album.name;
+            albumLink.href = '#'; // Link to a hash (will be used to identify the selected album)
+            albumLink.addEventListener('click', () => {
+              displayAlbumTrackList(album);
+            });
+            li.appendChild(albumLink);
+            albumList.appendChild(li);
+          });
+          artistDiv.appendChild(albumList);
+        } else {
+          const noAlbumsMessage = document.createElement('p');
+          noAlbumsMessage.textContent = 'No albums found for this artist.';
+          artistDiv.appendChild(noAlbumsMessage);
+        }
       });
-      searchResultsDiv.appendChild(ul);
     } else {
       searchResultsDiv.textContent = 'No results found.';
     }
   }
+
+  
