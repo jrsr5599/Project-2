@@ -59,7 +59,7 @@ async function searchArtistsAndAlbums(query) {
 }
 
 const query = ''; 
-searchArtists(query)
+searchArtistsAndAlbums(query)
   .then((searchResults) => {
     console.log('Search Results:', searchResults);
   })
