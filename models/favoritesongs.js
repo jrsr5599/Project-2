@@ -11,10 +11,17 @@ Favoritesongs.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    name: {
+    artist: {
       type: DataTypes.STRING,
       allowNull: false,
     },
+
+    album: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
+
     user_id: {
       type: DataTypes.INTEGER,
       references : {
