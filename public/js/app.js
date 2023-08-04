@@ -1,3 +1,5 @@
+
+
 const clientId = '051652fb6a40447e8315d50d70c4f497';
 const clientSecret = 'dd07ad3d75df486e967c9dc12f4b1c52';
 const basicAuth = btoa(`${clientId}:${clientSecret}`);
@@ -77,7 +79,23 @@ searchArtistsAndAlbums(query)
         console.error('Error:', error);
       });
   }
-  
+  async function savetofavorites(album) {
+    console.log(album);
+    const postdata = {
+      artist: album.artists[0].name,
+      album: album.name
+    }
+    const response = await fetch("/api/favsongs",{
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json",
+      },
+    body: JSON.stringify(postdata)
+    });
+    const data = await response.json();
+    
+
+  }
   function displaySearchResults(results) {
     const searchResultsDiv = document.getElementById('searchResults');
     searchResultsDiv.innerHTML = '';
@@ -99,8 +117,11 @@ searchArtistsAndAlbums(query)
             albumLink.textContent = album.name;
             albumLink.href = '#'; // Link to a hash (will be used to identify the selected album)
             albumLink.addEventListener('click', () => {
-              displayAlbumTrackList(album);
+              // displayAlbumTrackList(album);
+              savetofavorites(album);
             });
+
+
             li.appendChild(albumLink);
             albumList.appendChild(li);
           });

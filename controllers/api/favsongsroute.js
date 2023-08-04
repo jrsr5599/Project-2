@@ -22,6 +22,7 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", withAuth, async (req, res) => {
+  console.log(req.body);
   try {
     // Check if the user is logged in before proceeding
     if (!req.session.logged_in) {
@@ -31,16 +32,14 @@ router.post("/", withAuth, async (req, res) => {
       return;
     }
     // Get the user input from the request body
-    const { name, artist, album, genre } = req.body;
+    const { artist, album } = req.body;
 
     // Validate the input (you can add more validation logic if needed)
 
     // Create the new favorite song in the database
     const newFavoriteSong = await favoritesongs.create({
-      name,
       artist,
       album,
-      genre,
       // Assuming you have a foreign key "user_id" to link the favorite song to the user who added it
       user_id: req.session.user_id, // Make sure you have the user_id in the session after login
     });
