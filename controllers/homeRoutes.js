@@ -1,21 +1,21 @@
-const router = require("express").Router();
-const { Favoritesongs, User } = require("../models");
-const withAuth = require("../utils/auth");
+// requiring express for route / models
+const router = require('express').Router();
+const { Favoritesongs, User } = require('../models');
+const withAuth = require('../utils/auth');
 
-router.get("/", async (req, res) => {
+// route to get favorite songs table from database for associated user
+router.get('/', async (req, res) => {
   try {
     const favSong = await Favoritesongs.findAll({
       include: [
         {
           model: User,
-          attributes: ["name"],
+          attributes: ['name'],
         },
       ],
     });
-
     const favSongs = favSong.map((songs) => songs.get({ plain: true }));
-
-    res.render("homepage", {
+    res.render('homepage', {
       favSongs,
       logged_in: req.session.logged_in,
     });
@@ -24,20 +24,21 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/searchresults/:id", async (reg, res) => {
+// route for search results
+router.get('/searchresults/:id', async (reg, res) => {
   try {
     const favSongData = await Favoritesongs.findByPk(req.params.id, {
       include: [
         {
           model: User,
-          attributes: ["name"],
+          attributes: ['name'],
         },
       ],
     });
 
     const favSong = favSongData.get({ plain: true });
 
-    res.render("project", {
+    res.render('project', {
       ...favSong,
       logged_in: req.session.logged_in,
     });
@@ -46,16 +47,15 @@ router.get("/searchresults/:id", async (reg, res) => {
   }
 });
 
-router.get("/searchresults", withAuth, async (req, res) => {
+// route for search results
+router.get('/searchresults', withAuth, async (req, res) => {
   try {
     const userData = await User.findByPk(req.session.user_id, {
-      attributes: { exclude: ["password"] },
+      attributes: { exclude: ['password'] },
       include: [{ model: Favoritesongs }],
     });
-
     const user = userData.get({ plain: true });
-
-    res.render("searchresults", {
+    res.render('searchresults', {
       ...user,
       logged_in: true,
     });
@@ -64,12 +64,13 @@ router.get("/searchresults", withAuth, async (req, res) => {
   }
 });
 
-router.get("/login", (req, res) => {
+router.get('/login', (req, res) => {
   if (req.session.logged_in) {
-    res.redirect("/searchresults");
+    res.redirect('/searchresults');
   } else {
-    res.render("login");
+    res.render('login');
   }
 });
 
+// exporting routes
 module.exports = router;
