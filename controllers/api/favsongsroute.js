@@ -1,18 +1,20 @@
-const router = require("express").Router();
-const favoritesongs = require("../../models/favoritesongs");
-const withAuth = require("../../utils/auth");
+// defining route, requiring express and model
+const router = require('express').Router();
+const favoritesongs = require('../../models/favoritesongs');
+const withAuth = require('../../utils/auth');
 
-router.get("/", async (req, res) => {
+// get route to find all songs saved by user then render
+router.get('/', async (req, res) => {
   try {
     const songList = await favoritesongs.findAll({
       include: [
         {
           model: favoritesongs,
-          attributes: ["name"],
+          attributes: ['name'],
         },
       ],
     });
-    res.render("searchresults", {
+    res.render('searchresults', {
       songList,
       logged_in: req.session.logged_in,
     });
@@ -21,39 +23,33 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", withAuth, async (req, res) => {
+// post route
+router.post('/', withAuth, async (req, res) => {
   console.log(req.body);
   try {
     // Check if the user is logged in before proceeding
     if (!req.session.logged_in) {
       res
         .status(401)
-        .json({ message: "You must be logged in to add a favorite song." });
+        .json({ message: 'You must be logged in to add a favorite song.' });
       return;
     }
     // Get the user input from the request body
     const { artist, album } = req.body;
-
-    // Validate the input (you can add more validation logic if needed)
-
-    // Create the new favorite song in the database
+    // Create the new favorite song/album in the database
     const newFavoriteSong = await favoritesongs.create({
       artist,
       album,
-      // Assuming you have a foreign key "user_id" to link the favorite song to the user who added it
-      user_id: req.session.user_id, // Make sure you have the user_id in the session after login
+      user_id: req.session.user_id, 
     });
-
-    // Send a response indicating success
-    res
-      .status(201)
-      .json({
-        message: "Favorite song added successfully.",
-        favoriteSong: newFavoriteSong,
-      });
+    res.status(201).json({
+      message: 'Favorite song added successfully.',
+      favoriteSong: newFavoriteSong,
+    });
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
+// export routes
 module.exports = router;

@@ -1,8 +1,11 @@
+// declared model and requiring sequelize
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
+//class defining the model
 class Favoritesongs extends Model {}
 
+// model for Favoritesongs table in the db
 Favoritesongs.init(
   {
     id: {
@@ -21,15 +24,14 @@ Favoritesongs.init(
       allowNull: false,
     },
 
-
     user_id: {
       type: DataTypes.INTEGER,
-      references : {
+      references: {
         model: 'user',
         key: 'id',
-      }
-    }
-  },  
+      },
+    },
+  },
   {
     sequelize,
     timestamps: false,
@@ -39,4 +41,5 @@ Favoritesongs.init(
   }
 );
 
+// export model
 module.exports = Favoritesongs;
