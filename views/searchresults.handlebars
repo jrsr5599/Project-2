@@ -28,26 +28,30 @@
 </div>
 
 
-<div class="input-group">
+{{!-- <div class="input-group col-4 d-flex justify-content-center">
   <div class="form-outline">
-    <input type="search" id="form1" class="form-control" />
-    <label class="form-label" for="form1">Search</label>
+    <input type="search " id="form1" class="form-control " />
+    <label class="form-label " for="form1">Search for Artists here</label>
   </div>
   <button type="button" class="btn btn-primary" onclick="performSearch()">
     <i class="fas fa-search"></i>
   </button>
+</div> --}}
+
+<div class="input-group col-4 d-flex justify-content-center">
+  <input type="search" id="form1" class="form-control" placeholder="Artist / Album" aria-describedby="basic-addon2">
+  <div class="input-group-append">
+    <button class="btn btn-outline-secondary" type="button" onclick="performSearch()">Search</button>
+  </div>
 </div>
 
 
-
-
-<div id="searchResults"></div>
 
 <div id="trackList"></div>
 
 <div class="row">
   <!-- Music details modal -->
-  <div class="music key" id="musicLog" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+  <div class="music-key" id="musicLog" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
     aria-labelledby="musicLog" aria-hidden="true">
     <div class="music-dialog">
       <div class="music-content">
@@ -64,9 +68,9 @@
           <button type="button" class="btn btn-secondary" data-dismiss="music">
             Close
           </button> --}}
-          <button type="button" class="btn btn-primary" id="addToFavorite">
+          {{!-- <button type="button" class="btn btn-primary" id="addToFavorite">
             Add to favorites
-          </button>
+          </button> --}}
         </div>
       </div>
     </div>
@@ -78,11 +82,15 @@
 
 <div class="row">
   <div class="col">
-    <h3>Catagories</h3>
+    <h3>Search Results</h3>
+
+<div id="searchResults"></div>
+
     <ul id="categories"></ul>
   </div>
   <div class="col">
     <h3>Music in Catalog</h3>
+    <h4>click on album to add to your catalog</h4>
     <div id="musicInCatalog">
       <div class="card-columns" id="musicCards">
 
@@ -100,7 +108,7 @@
 </div>
 
 <div>
-  <nav>
+  <nav class="d-flex justify-content-center">
     <a class="btn btn-primary" id="logout" href="/">Logout</a>
   </nav>
 </div>

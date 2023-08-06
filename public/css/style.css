@@ -1,0 +1,63 @@
+/* stylesheet for html elements */
+
+body {
+    background-color: #ffffff;
+}
+
+header {
+    padding: 10px;
+    font-family: var(--base-font);
+    background-color: #535252;
+    color: #ffffff;
+    text-align: center;
+}
+
+header h1 {
+    display: inline-block;
+    font-size: 48px;
+    align-items: center;
+    text-align: center;
+}
+
+h1 {
+    font-size: 48px;
+    align-items: center;
+    text-align: center;
+}
+
+h2 {
+    font-size: 48px;
+    align-items: center;
+    text-align: center;
+}
+
+h3 {
+    font-size: 48px;
+    align-items: center;
+    text-align: center;
+}
+
+h4 {
+    align-items: center;
+    text-align: center;
+}
+
+.input-group {
+    color:rgb(0, 0, 0) ;
+    font-family:var(--base-font);
+    text-align: center;
+    align-items: center;
+    display: block;
+    font-size: 15px;
+}
+
+
+.form-outline {
+    color:rgb(0, 0, 0) ;
+    font-family:var(--base-font);
+    text-align: center;
+    align-items: center;
+    display: block;
+    font-size: 15px;
+}
+
