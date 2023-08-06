@@ -74,6 +74,7 @@ const query = '';
 searchArtistsAndAlbums(query)
   .then((searchResults) => {
     console.log('Search Results:', searchResults);
+    displaySearchResults(searchResults);
   })
   .catch((error) => {
     console.error('Error:', error);
@@ -84,6 +85,7 @@ function performSearch() {
   const query = document.getElementById('form1').value;
   searchArtistsAndAlbums(query)
     .then((searchResults) => {
+      console.log('Search Results:', searchResults);
       displaySearchResults(searchResults);
     })
     .catch((error) => {
@@ -91,27 +93,88 @@ function performSearch() {
     });
 }
 
+// Function to view all albums by the artist with album images
+async function viewAlbumsByArtist(artistId) {
+  if (!accessToken) {
+    await getAccessToken();
+  }
+
+  try {
+    const albumsResponse = await axios.get(
+      `https://api.spotify.com/v1/artists/${artistId}/albums`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          include_groups: 'album',
+        },
+      }
+    );
+
+    const albums = albumsResponse.data.items;
+    const albumsDiv = document.getElementById('albumsDiv');
+    albumsDiv.innerHTML = '';
+
+    albums.forEach((album) => {
+      const albumDiv = document.createElement('div');
+      albumDiv.classList.add('album-container');
+
+      // Album Name
+      const albumName = document.createElement('h4');
+      albumName.textContent = album.name;
+
+      // Album Image
+      if (album.images.length > 0) {
+        const albumImage = document.createElement('div');
+        albumImage.style.backgroundImage = `url(${album.images[0].url})`; // Use the first image URL from the array
+        albumImage.classList.add('album-image');
+
+        albumDiv.appendChild(albumName);
+        albumDiv.appendChild(albumImage);
+      }
+
+      albumsDiv.appendChild(albumDiv);
+    });
+  } catch (error) {
+    console.error('Error fetching albums:', error);
+  }
+}
+
+
+
 // function allows to save the albums to the database
 async function savetofavorites(album) {
-  console.log(album);
   const postdata = {
     artist: album.artists[0].name,
     album: album.name,
   };
-  const response = await fetch('/api/favsongs', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(postdata),
-  });
-  const data = await response.json();
+
+  try {
+    const response = await fetch('/api/favsongs', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(postdata),
+    });
+
+    if (response.ok) {
+      alert('Album saved to favorites!');
+    } else {
+      alert('Error saving album to favorites.');
+    }
+  } catch (error) {
+    console.error('Error saving album to favorites:', error);
+  }
 }
+
 
 // function to display the search results // dom manipulation using javascript
 function displaySearchResults(results) {
   const searchResultsDiv = document.getElementById('searchResults');
   searchResultsDiv.innerHTML = '';
+
   if (results && results.length > 0) {
     results.forEach((result) => {
       const artistName = result.artist.name;
@@ -119,20 +182,32 @@ function displaySearchResults(results) {
       const artistDiv = document.createElement('div');
       artistDiv.innerHTML = `<h3>${artistName}</h3>`;
       searchResultsDiv.appendChild(artistDiv);
+
       if (albums.length > 0) {
         const albumList = document.createElement('ul');
         albums.forEach((album) => {
-          const li = document.createElement('li');
+          const albumName = album.name;
+          const albumImages = album.images;
           const albumLink = document.createElement('a');
-          albumLink.textContent = album.name;
           albumLink.href = '#';
           albumLink.addEventListener('click', () => {
             savetofavorites(album);
           });
 
-          li.appendChild(albumLink);
-          albumList.appendChild(li);
+          if (albumImages.length > 0) {
+            const albumImage = document.createElement('div');
+            albumImage.style.backgroundImage = `url(${albumImages[0].url})`;
+            albumImage.classList.add('album-image');
+
+            albumLink.appendChild(albumImage);
+            albumList.appendChild(albumLink);
+          }
+
+          const albumNameListItem = document.createElement('li');
+          albumNameListItem.textContent = albumName;
+          albumList.appendChild(albumNameListItem);
         });
+
         artistDiv.appendChild(albumList);
       } else {
         const noAlbumsMessage = document.createElement('p');
@@ -144,3 +219,4 @@ function displaySearchResults(results) {
     searchResultsDiv.textContent = 'No results found.';
   }
 }
+
