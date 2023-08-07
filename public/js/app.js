@@ -158,7 +158,8 @@ async function savetofavorites(album) {
     });
 
     if (response.ok) {
-      alert("Album saved to favorites!");
+      //alert("Album saved to favorites!");
+      window.location.reload();
     } else {
       alert("Error saving album to favorites.");
     }
@@ -216,3 +217,15 @@ function displaySearchResults(results) {
     searchResultsDiv.textContent = "No results found.";
   }
 }
+
+document.querySelector(".deletesongs").addEventListener("click", function(event){
+  if(event.target.nodeName !== "BUTTON"){
+    return;
+  }
+  const id = event.target.dataset.id;
+  fetch("/api/favsongs/" + id,{method:"DELETE"})
+  .then(res=>res.json())
+  .then(data=>{
+    window.location.reload()
+  })
+})
