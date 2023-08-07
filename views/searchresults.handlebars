@@ -62,8 +62,13 @@
       {{#if Favoritesongs.length}}
       <div class="card-columns deletesongs" id="musicCards">
         {{#each Favoritesongs as |Favoritesongs|}}
-        <div>
-          <li>{{Favoritesongs.artist}} - {{Favoritesongs.album}}</li> <button data-id="{{Favoritesongs.id}}">Delete</button>
+        <div class="row">
+          <div class="col-md-8">
+            <h5>{{Favoritesongs.artist}} - {{Favoritesongs.album}}</h5>
+          </div>
+          <div class="col-md-4">
+             <button class="btn btn-sm btn-danger" data-id="{{Favoritesongs.id}}">Delete</button>
+          </div>
         </div>
         {{/each}}
       </div>
