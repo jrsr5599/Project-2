@@ -5,9 +5,9 @@ Project 2 Challenge
 
 * AS a music lover
 
-* I WANT to be able to create a page where the user can search for music 
+* I WANT to be able to create a page where the user can search for their favorite artist and get a list of albums
 
-* SO THAT the user can add to a favorite list and be able to remove and add artists, songs and / or albums
+* SO THAT the user can add to a favorite list and be able to remove any album they have added. 
 
 ## Acceptance Criteria
 
@@ -17,15 +17,15 @@ Project 2 Challenge
 
 * THEN the user is presented with a login page to either login or create an account
 
-* WHEN the user chooses a search parameter, either song, album or artist
+* WHEN the user searches for their favorite artist
 
-* THEN the user is presented with the search results based on their input
+* THEN the user is presented with the albums by that artist
 
 * WHEN the user clicks the add button
 
-* THEN the user can add the song, album or artist to their favorite list
+* THEN the user can add their favorite album by that artist to a favorite list
 
-* WHEN the user adds to the favorite list, they are able to remove or add more music
+* WHEN the user adds to the favorite list, they are able to remove or add more albums
 
 
 ## Resources
@@ -41,3 +41,10 @@ Project 2 Challenge
 * Stackoverflow to answer questions on coding
 
 
+## Assets
+
+![Screenshot of the front page of Music Shoopa](public/images/website-1.png)
+
+![Screenshot of the search page of Music Shoopa](public/images/website-2.png)
+
+![Screenshot of the results of the search in Music Shoopa](public/images/website-3.png)
