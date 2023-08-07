@@ -48,3 +48,5 @@ Project 2 Challenge
 ![Screenshot of the search page of Music Shoopa](public/images/website-2.png)
 
 ![Screenshot of the results of the search in Music Shoopa](public/images/website-3.png)
+
+![Screenshot of adding to the favorites in Music Shoopa](public/images/website-4.png)
