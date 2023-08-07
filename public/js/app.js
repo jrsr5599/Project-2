@@ -1,6 +1,6 @@
 // credentials for api
-const clientId = '051652fb6a40447e8315d50d70c4f497';
-const clientSecret = 'dd07ad3d75df486e967c9dc12f4b1c52';
+const clientId = "051652fb6a40447e8315d50d70c4f497";
+const clientSecret = "dd07ad3d75df486e967c9dc12f4b1c52";
 const basicAuth = btoa(`${clientId}:${clientSecret}`);
 // placeholder for eventual token
 let accessToken = null;
@@ -9,19 +9,19 @@ let accessToken = null;
 async function getAccessToken() {
   try {
     const response = await axios.post(
-      'https://accounts.spotify.com/api/token',
-      'grant_type=client_credentials',
+      "https://accounts.spotify.com/api/token",
+      "grant_type=client_credentials",
       {
         headers: {
           Authorization: `Basic ${basicAuth}`,
-          'Content-Type': 'application/x-www-form-urlencoded',
+          "Content-Type": "application/x-www-form-urlencoded",
         },
       }
     );
 
     accessToken = response.data.access_token;
   } catch (error) {
-    console.error('Error fetching access token:', error);
+    console.error("Error fetching access token:", error);
   }
 }
 
@@ -32,13 +32,13 @@ async function searchArtistsAndAlbums(query) {
   }
 
   try {
-    const response = await axios.get('https://api.spotify.com/v1/search', {
+    const response = await axios.get("https://api.spotify.com/v1/search", {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
       params: {
         q: query,
-        type: 'artist',
+        type: "artist",
       },
     });
 
@@ -52,7 +52,7 @@ async function searchArtistsAndAlbums(query) {
               Authorization: `Bearer ${accessToken}`,
             },
             params: {
-              include_groups: 'album',
+              include_groups: "album",
             },
           }
         );
@@ -65,31 +65,31 @@ async function searchArtistsAndAlbums(query) {
 
     return albums;
   } catch (error) {
-    console.error('Error searching artists and albums:', error);
+    console.error("Error searching artists and albums:", error);
   }
 }
 
 // allows ability to pass the search terms into the search functions
-const query = '';
+const query = "";
 searchArtistsAndAlbums(query)
   .then((searchResults) => {
-    console.log('Search Results:', searchResults);
+    console.log("Search Results:", searchResults);
     displaySearchResults(searchResults);
   })
   .catch((error) => {
-    console.error('Error:', error);
+    console.error("Error:", error);
   });
 
 // actual search button function to fire off the search
 function performSearch() {
-  const query = document.getElementById('form1').value;
+  const query = document.getElementById("form1").value;
   searchArtistsAndAlbums(query)
     .then((searchResults) => {
-      console.log('Search Results:', searchResults);
+      console.log("Search Results:", searchResults);
       displaySearchResults(searchResults);
     })
     .catch((error) => {
-      console.error('Error:', error);
+      console.error("Error:", error);
     });
 }
 
@@ -107,28 +107,28 @@ async function viewAlbumsByArtist(artistId) {
           Authorization: `Bearer ${accessToken}`,
         },
         params: {
-          include_groups: 'album',
+          include_groups: "album",
         },
       }
     );
 
     const albums = albumsResponse.data.items;
-    const albumsDiv = document.getElementById('albumsDiv');
-    albumsDiv.innerHTML = '';
+    const albumsDiv = document.getElementById("albumsDiv");
+    albumsDiv.innerHTML = "";
 
     albums.forEach((album) => {
-      const albumDiv = document.createElement('div');
-      albumDiv.classList.add('album-container');
+      const albumDiv = document.createElement("div");
+      albumDiv.classList.add("album-container");
 
       // Album Name
-      const albumName = document.createElement('h4');
+      const albumName = document.createElement("h4");
       albumName.textContent = album.name;
 
       // Album Image
       if (album.images.length > 0) {
-        const albumImage = document.createElement('div');
+        const albumImage = document.createElement("div");
         albumImage.style.backgroundImage = `url(${album.images[0].url})`; // Use the first image URL from the array
-        albumImage.classList.add('album-image');
+        albumImage.classList.add("album-image");
 
         albumDiv.appendChild(albumName);
         albumDiv.appendChild(albumImage);
@@ -137,11 +137,9 @@ async function viewAlbumsByArtist(artistId) {
       albumsDiv.appendChild(albumDiv);
     });
   } catch (error) {
-    console.error('Error fetching albums:', error);
+    console.error("Error fetching albums:", error);
   }
 }
-
-
 
 // function allows to save the albums to the database
 async function savetofavorites(album) {
@@ -151,72 +149,70 @@ async function savetofavorites(album) {
   };
 
   try {
-    const response = await fetch('/api/favsongs', {
-      method: 'POST',
+    const response = await fetch("/api/favsongs", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(postdata),
     });
 
     if (response.ok) {
-      alert('Album saved to favorites!');
+      alert("Album saved to favorites!");
     } else {
-      alert('Error saving album to favorites.');
+      alert("Error saving album to favorites.");
     }
   } catch (error) {
-    console.error('Error saving album to favorites:', error);
+    console.error("Error saving album to favorites:", error);
   }
 }
 
-
 // function to display the search results // dom manipulation using javascript
 function displaySearchResults(results) {
-  const searchResultsDiv = document.getElementById('searchResults');
-  searchResultsDiv.innerHTML = '';
+  const searchResultsDiv = document.getElementById("searchResults");
+  searchResultsDiv.innerHTML = "";
 
   if (results && results.length > 0) {
     results.forEach((result) => {
       const artistName = result.artist.name;
       const albums = result.albums;
-      const artistDiv = document.createElement('div');
+      const artistDiv = document.createElement("div");
       artistDiv.innerHTML = `<h3>${artistName}</h3>`;
       searchResultsDiv.appendChild(artistDiv);
 
       if (albums.length > 0) {
-        const albumList = document.createElement('ul');
+        const albumList = document.createElement("ul");
         albums.forEach((album) => {
           const albumName = album.name;
           const albumImages = album.images;
-          const albumLink = document.createElement('a');
-          albumLink.href = '#';
-          albumLink.addEventListener('click', () => {
+          const albumLink = document.createElement("a");
+          albumLink.href = "#";
+          albumLink.addEventListener("click", () => {
             savetofavorites(album);
           });
 
           if (albumImages.length > 0) {
-            const albumImage = document.createElement('div');
+            const albumImage = document.createElement("div");
             albumImage.style.backgroundImage = `url(${albumImages[0].url})`;
-            albumImage.classList.add('album-image');
+            albumImage.classList.add("album-image");
 
             albumLink.appendChild(albumImage);
             albumList.appendChild(albumLink);
           }
 
-          const albumNameListItem = document.createElement('li');
+          const albumNameListItem = document.createElement("li");
           albumNameListItem.textContent = albumName;
           albumList.appendChild(albumNameListItem);
         });
 
         artistDiv.appendChild(albumList);
       } else {
-        const noAlbumsMessage = document.createElement('p');
-        noAlbumsMessage.textContent = 'No albums found for this artist.';
+        const noAlbumsMessage = document.createElement("p");
+        noAlbumsMessage.textContent = "No albums found for this artist.";
         artistDiv.appendChild(noAlbumsMessage);
       }
     });
   } else {
-    searchResultsDiv.textContent = 'No results found.';
+    searchResultsDiv.textContent = "No results found.";
   }
 }
-
