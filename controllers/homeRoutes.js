@@ -15,7 +15,8 @@ router.get("/", async (req, res) => {
       ],
     });
     const favSongs = favSong.map((songs) => songs.get({ plain: true }));
-    res.render("homepage", {
+    console.log(favSongs);
+    res.render("searchresults", {
       favSongs,
       logged_in: req.session.logged_in,
     });
@@ -55,6 +56,7 @@ router.get("/searchresults", withAuth, async (req, res) => {
       include: [{ model: Favoritesongs }],
     });
     const user = userData.get({ plain: true });
+    console.log(user)
     res.render("searchresults", {
       ...user,
       logged_in: true,

@@ -59,11 +59,11 @@
     <h3>Favorite Songs</h3>
     <h4>click on the album to add to your favorites</h4>
     <div id="musicInCatalog">
-      {{#if favsongs.length}}
-      <div class="card-columns" id="musicCards">
-        {{#each favsongs as |favoritesongs|}}
+      {{#if Favoritesongs.length}}
+      <div class="card-columns deletesongs" id="musicCards">
+        {{#each Favoritesongs as |Favoritesongs|}}
         <div>
-          <li>{{favoritesongs.artist}}</li>
+          <li>{{Favoritesongs.artist}} - {{Favoritesongs.album}}</li> <button data-id="{{Favoritesongs.id}}">Delete</button>
         </div>
         {{/each}}
       </div>

@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
         },
       ],
     });
-    res.render('searchresults', {
+    res.render('homepage', {
       songList,
       logged_in: req.session.logged_in,
     });
@@ -50,6 +50,27 @@ router.post('/', withAuth, async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+router.delete('/:id', withAuth, async (req, res) => {
+  try {
+    const favsongDelete = await favoritesongs.destroy({
+      where: {
+        id: req.params.id,
+        user_id: req.session.user_id,
+      },
+    });
+
+    if (!favsongDelete) {
+      res.status(404).json({ message: 'No songs found with this id!' });
+      return;
+    }
+
+    res.status(200).json(favsongDelete);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 
 // export routes
 module.exports = router;
